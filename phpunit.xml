@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="tests/AdminTest.php" colors="true" cacheDirectory="tests/.runtime/phpunit-cache">
+    <testsuites>
+        <testsuite name="admin"><file>tests/AdminTest.php</file></testsuite>
+    </testsuites>
+</phpunit>

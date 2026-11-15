@@ -1,0 +1,10 @@
+<html>
+<head>
+<script>
+window.location="controller.php";
+</script>
+</head>
+<body>
+	<a href="controller.php">Go To Database</a>
+</body>
+</html>

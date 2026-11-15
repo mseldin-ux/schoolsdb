@@ -1,0 +1,6 @@
+/vendor/
+/node_modules/
+/test-results/
+/playwright-report/
+/tests/.runtime/
+/config.php

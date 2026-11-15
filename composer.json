@@ -1,0 +1,14 @@
+{
+    "name": "schools/directory",
+    "description": "Legacy school directory modernization and regression tests",
+    "require": {
+        "php": "^8.4",
+        "ext-mysqli": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.0"
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}

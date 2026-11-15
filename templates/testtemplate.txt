@@ -1,0 +1,553 @@
+XXXXX login XXXXX
+<form action="controller.php" method="post">
+<input name="action" value="login" type="hidden"/>
+<table width="300">
+<tr><td>User name:</td><td><input name="username" /></td></tr>
+<tr><td>Password:</td><td><input name="password" /></td></tr>
+<tr><td></td><td><input type="submit" value="Log In" /></td></tr>
+</form>
+
+
+XXXXX logout XXXXX
+<table bgcolor="#ee1144" width="400" cellpadding="3"><tr valign="center"><td><font color="#99dd66"><b> &nbsp; Logged in as <<<username>>></b></font></td>
+<td width="50"> &nbsp; 
+</td>
+
+<td><form action="controller.php" method="post">
+<input name="silent" value="1" type="hidden"/>
+<input name="action" value="logout" type="hidden"/>
+<input type="submit" value="Log Out" />
+</td>
+</tr></table>
+</form>
+
+XXXXX save XXXXX
+
+Saving grace
+
+Ok?
+
+XXXXX run XXXXX
+
+Run to the 
+<select name="stateprovince">
+<<<list-stateprovince>>>
+
+</select> left
+
+Run to the right
+
+Stuck in the middle with you
+
+XXXXX adminlistitem XXXXX
+<FORM ACTION="controller.php" method="POST" target="_new">
+<input type="hidden" name="action" value="edit" />
+<input type="hidden" name="id" value="<<<id>>>" />
+<tr bgcolor="<<<rowbg>>>"><td><<<id>>></td><td><b><<<schoolname>>></b></td>
+<td width="150"><a href="http://<<<web>>>" target="new"><<<web>>></a></td>
+<td><<<stateprovince>>></td><td><<<country>>></td>
+<td><font size="1">Last modifed on <<<lastmodified>>> by <<<modifiedbyname>>></font></td>
+<td><input type="submit" value="Edit" /></td>
+<input type="hidden" name="idtarget" value="<<<idtarget>>>" />
+<input type="hidden" name="keywords" value="<<<keywords>>>" />
+<input type="hidden" name="start" value="<<<start>>>" />
+<input type="hidden" name="sort" value="<<<sort>>>" />
+
+<td>
+<input type="button" value="Add New Review" onClick='addReviewForm("<<<id>>>");' />
+
+
+</td>
+</tr>
+</FORM>
+<tr><td></td><td colspan="6"><span id='newreview-<<<id>>>'></span></td></tr>
+
+<tr><td> &nbsp; </td><td colspan="6"><<<reviews>>></td></tr>
+
+XXXXX reviewitem XXXXX
+
+<FORM ACTION="controller.php" method="POST" id="form-<<<reviewid>>>" >
+<input type="hidden" name="action" value="updatereview" />
+<input type="hidden" name="schoolid" id="schoolid-<<<reviewid>>>" value="<<<schoolid>>>" />
+<tr><td><font size="1"><<<reviewdate>>></font></td><td>
+<select name="reviewstatus" id="reviewstatus-<<<reviewid>>>" >
+<<<list-reviewstatus>>>
+</select>
+</td><td><input size="40" name="comments" id="comments-<<<reviewid>>>" value="<<<comments>>>" /></td><td>
+<input type="button" onClick='updateReview("<<<reviewid>>>")' value="update review" />
+</td>
+<td><span id="resultstatus-<<<reviewid>>>"></span></td>
+
+</tr></form>
+
+XXXXX adminheader XXXXX
+<table><tr>
+<td><a href="?action=adminlist<<<sortstatement>>>" onClick='return window.confirm("Really go back? Changes will not be saved.");'>Go Back to Admin List</a></td>
+<td><a href="?action=create">Create New Record</a></td>
+<td><a href="?action=delete" onClick='return window.confirm("Really delete this record? This cannot be undone!");'>Delete School Record</a></td></tr></table>
+
+XXXXX editandnew XXXXX
+<table>
+<tr><td colspan="2"><<<adminoptions>>></td></tr>
+<tr><td>
+<table>
+<tr><td>ID</td><td><input name="id" type="hidden" value="<<<id>>>" /><<<id>>></td></tr>
+<tr><td>Name of school</td><td><input name="schoolname" value="<<<schoolname>>>" /></td></tr>
+<tr><td>Contact name</td><td><input name="contactname" value="<<<contactname>>>" /></td></tr>
+<tr><td>Head of schoolname</td><td><input name="headofschoolname" value="<<<headofschoolname>>>" /></td></tr>
+<tr><td>Address1</td><td><input name="address1" value="<<<address1>>>" /></td></tr>
+<tr><td>Address2</td><td><input name="address2" value="<<<address2>>>" /></td></tr>
+<tr><td>City</td><td><input name="city" value="<<<city>>>" /></td></tr>
+
+<tr><td>State or Province</td><td>
+<input type="hidden" name="altstateprovince" id='altstateprovinceid' value="XXX"/>
+
+<select name="stateprovince" id="spselect" onChange='handleStates();'>
+<<<list-stateprovince>>>
+
+</select>
+</td></tr>
+<tr id='spwrite' style='visibility:hidden' ><td>
+Enter a state or province name</td><td>
+<input id='altspinput' onChange="document.getElementById('altstateprovinceid').value=this.value;"/>
+
+</td></tr>
+<script>
+function handleStates() {
+	var altspval="<<<stateprovince>>>";
+	var spselectobj=document.getElementById('spselect');
+	var spwriteobj=document.getElementById('spwrite');
+	var spwriteinput=document.getElementById('altspinput');
+	var index = spselectobj.selectedIndex;
+	var selected_option_value = spselectobj.options[index].value;
+	if (selected_option_value =='Outside US and Canada') {
+		spwriteobj.style['visibility']='visible';
+		spwriteinput.value=altspval;
+	}
+	else {
+		spwriteobj.style['visibility']='hidden';
+	}
+}
+handleStates();
+</script>
+<tr><td>Zip/postal code</td><td><input name="zippostal" value="<<<zippostal>>>" /></td></tr>
+<tr><td>Country</td><td><select name="country">
+<<<list-country>>>
+
+</select> </td></tr>
+<tr><td>1st Phone Label</td><td><input name="phone1label" value="<<<phone1label>>>" /></td></tr>
+
+<tr><td>1st Phone Number</td><td><input name="phone1number" value="<<<phone1number>>>" /></td></tr>
+
+<tr><td>2nd Phone Label</td><td><input name="phone2label" value="<<<phone2label>>>" /></td></tr>
+
+<tr><td>2nd Phone Number</td><td><input name="phone2number" value="<<<phone2number>>>" /></td></tr>
+
+<tr><td>3rd Phone Label</td><td><input name="phone3label" value="<<<phone3label>>>" /></td></tr>
+
+<tr><td>3rd Phone Number</td><td><input name="phone3number" value="<<<phone3number>>>" /></td></tr>
+<tr><td>Info email</td><td><input name="infoemail" value="<<<infoemail>>>" /></td></tr>
+
+<tr><td>web</td><td><input name="web" value="<<<web>>>" /></td></tr>
+
+<tr><td>schooltype</td><td><select name="schooltype">
+<<<list-schooltype>>>
+
+</select> </td></tr>
+
+<tr><td>infants</td><td><input name="infants" value="<<<infants>>>" /></td></tr>
+
+
+<tr><td>toddlers</td><td><input name="toddlers" value="<<<toddlers>>>" /></td></tr>
+
+</table></td><td>
+<table>
+<tr><td>primary</td><td><input name="primary" value="<<<primary>>>" /></td></tr>
+
+
+<tr><td>lowerel</td><td><input name="lowerel" value="<<<lowerel>>>" /></td></tr>
+
+
+<tr><td>upperel</td><td><input name="upperel" value="<<<upperel>>>" /></td></tr>
+
+
+<tr><td>middle</td><td><input name="middle" value="<<<middle>>>" /></td></tr>
+
+<tr><td>highschool</td><td><input name="highschool" value="<<<highschool>>>" /></td></tr>
+
+<tr><td>affiliations</td><td><input name="affiliations" value="<<<affiliations>>>" /></td></tr>
+
+<tr><td>lastmodified</td><td><<<lastmodified>>></td></tr>
+
+<tr><td>lastmodifiedby</td><td><<<modifiedbyname>>></td></tr>
+<tr><td>lat</td><td><<<lat>>></td></tr>
+<tr><td>lng</td><td><<<lng>>></td></tr>
+
+<tr><td>recuser</td><td><input name="recuser" value="<<<recuser>>>" /></td></tr>
+
+<tr><td>recpass</td><td><input name="recpass" value="<<<recpass>>>" /></td></tr>
+<tr><td>recemail</td><td><input name="recemail" value="<<<recemail>>>" /></td></tr>
+<tr><td>recsecretq</td><td><input name="recsecretq" value="<<<recsecretq>>>" /></td></tr>
+<tr><td>recsecreta</td><td><input name="recsecreta" value="<<<recsecreta>>>" /></td></tr>
+<tr><td>Bilingual:</td><td><<<bilingual>>></tr>
+<tr><td>Horses:</td><td><<<horse>>></tr>
+<tr><td>swimming:</td><td><<<swimming>>></tr>
+<tr><td>dance:</td><td><<<dance>>></tr>
+<tr><td>drama:</td><td><<<drama>>></tr>
+<tr><td>library:</td><td><<<library>>></tr>
+<tr><td>lunch:</td><td><<<lunch>>></tr>
+<tr><td>music:</td><td><<<music>>></tr>
+<tr><td>approved:</td><td><<<approved>>></tr>
+
+
+</table>
+</td></tr></table>
+XXXXX check-lists XXXXX
+bilingual
+horse
+swimming
+dance
+drama
+library
+lunch
+music
+approved
+
+XXXXX list-reviewstatus XXXXX
+Unreviewed
+Reviewed - OK
+Reviewed - Not Found
+Reviewed - Problems Found
+Reviewed - Updated
+
+XXXXX list-schooltype XXXXX
+Private
+Private non-profit
+Public
+Public Charter
+Public Magnet
+Unknown
+
+XXXXX list-country XXXXX
+United States
+Afghanistan
+Albania
+Algeria
+American Samoa
+Andorra
+Angola
+Anguilla
+Antarctica
+Antigua and Barbuda
+Argentina
+Armenia
+Aruba
+Australia
+Austria
+Azerbaijan
+Bahamas
+Bahrain
+Bangladesh
+Barbados
+Belarus
+Belgium
+Belize
+Benin
+Bermuda
+Bhutan
+Bolivia
+Bosnia and Herzegowina
+Botswana
+Bouvet Island
+Brazil
+British Indian Ocean Territory
+Brunei Darussalam
+Bulgaria
+Burkina Faso
+Burundi
+Cambodia
+Cameroon
+Canada
+Cape Verde
+Cayman Islands
+Central African Republic
+Chad
+Chile
+China
+Christmas Island
+Cocos (Keeling) Islands
+Colombia
+Comoros
+Congo
+Cook Islands
+Costa Rica
+Cote D'Ivoire
+Croatia (local name: Hrvatska)
+Cuba
+Cyprus
+Czech Republic
+Denmark
+Djibouti
+Dominica
+Dominican Republic
+East Timor
+Ecuador
+Egypt
+El Salvador
+Equatorial Guinea
+Eritrea
+Estonia
+Ethiopia
+Falkland Islands (Malvinas)
+Faroe Islands
+Fiji
+Finland
+France
+France, Metropolitan
+French Guiana
+French Polynesia
+French Southern Territories
+Gabon
+Gambia
+Georgia
+Germany
+Ghana
+Gibraltar
+Greece
+Greenland
+Grenada
+Guadeloupe
+Guam
+Guatemala
+Guinea
+Guinea-Bissau
+Guyana
+Haiti
+Heard and Mc Donald Islands
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iran (Islamic Republic of)
+Iraq
+Ireland
+Israel
+Italy
+Jamaica
+Japan
+Jordan
+Kazakhstan
+Kenya
+Kiribati
+Korea, Democratic Republic of
+Korea, Republic of
+Kuwait
+Kyrgyzstan
+Lao People's Democratic Republic
+Latvia
+Lebanon
+Lesotho
+Liberia
+Libyan Arab Jamahiriya
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+Macedonia
+Madagascar
+Malawi
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Martinique
+Mauritania
+Mauritius
+Mayotte
+Mexico
+Micronesia, Federated States of
+Moldova, Republic of
+Monaco
+Mongolia
+Montserrat
+Morocco
+Mozambique
+Myanmar
+Namibia
+Nauru
+Nepal
+Netherlands
+Netherlands Antilles
+New Caledonia
+New Zealand
+Nicaragua
+Niger
+Nigeria
+Niue
+Norfolk Island
+Northern Mariana Islands
+Norway
+Oman
+Pakistan
+Palau
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Pitcairn
+Poland
+Portugal
+Puerto Rico
+Qatar
+Reunion
+Romania
+Russian Federation
+Rwanda
+Saint Kitts and Nevis
+Saint Lucia
+Saint Vincent and the Grenadines
+Samoa
+San Marino
+Sao Tome and Principe
+Saudi Arabia
+Senegal
+Seychelles
+Sierra Leone
+Singapore
+Slovakia (Slovak Republic)
+Slovenia
+Solomon Islands
+Somalia
+South Africa
+Spain
+Sri Lanka
+St. Helena
+St. Pierre and Miquelon
+Sudan
+Suriname
+Svalbard and Jan Mayen Islands
+Swaziland
+Sweden
+Switzerland
+Syrian Arab Republic
+Taiwan
+Tajikistan
+Tanzania, United Republic of
+Thailand
+Togo
+Tokelau
+Tonga
+Trinidad and Tobago
+Tunisia
+Turkey
+Turkmenistan
+Turks and Caicos Islands
+Tuvalu
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+U.S. Minor Outlying Islands
+Uruguay
+Uzbekistan
+Vanuatu
+Vatican City State (Holy See)
+Venezuela
+Vietnam
+Virgin Islands (British)
+Virgin Islands (U.S.)
+Wallis And Futuna Islands
+Western Sahara
+Yemen
+Yugoslavia
+Zaire
+Zambia
+Zimbabwe
+
+
+XXXXX list-stateprovince XXXXX
+Outside US and Canada
+--Canadian Provinces--
+Alberta
+British Columbia
+Ontario
+Manitoba
+Prince Edward Island
+New Brunswick
+Québec
+Newfoundland and Labrador
+Nunavut
+Saskatchewan
+Northwest Territories
+Yukon
+Nova Scotia
+--U.S. States--
+Alabama
+Alaska
+American Samoa
+Arizona
+Arkansas
+California
+Colorado
+Connecticut
+Delaware
+District of Columbia
+Micronesia
+Florida
+Georgia
+Guam
+Hawaii
+Idaho
+Illinois
+Indiana
+Iowa
+Kansas
+Kentucky
+Louisiana
+Maine
+Marshall Islands
+Maryland
+Massachusetts
+Michigan
+Minnesota
+Mississippi
+Missouri
+Montana
+Nebraska
+Nevada
+New Hampshire
+New Jersey
+New Mexico
+New York
+North Carolina
+North Dakota
+Northern Mariana Islands
+Ohio
+Oklahoma
+Oregon
+Palau
+Pennsylvania
+Puerto Rico
+Rhode Island
+South Carolina
+South Dakota
+Tennessee
+Texas
+Utah
+Vermont
+Virgin Islands
+Virginia
+Washington
+West Virginia
+Wisconsin
+Wyoming
+Armed Forces Africa
+Armed Forces Americas
+Armed Forces Canada
+Armed Forces Europe
+Armed Forces Middle East
+Armed Forces Pacific

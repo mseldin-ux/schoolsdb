@@ -1,0 +1,62 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run admin regression tests",
+      "type": "process",
+      "command": "python3",
+      "args": ["-B", "${workspaceFolder}/tests/run_admin_tests.py"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start local PHP webserver",
+      "type": "process",
+      "command": "php",
+      "args": [
+        "-S",
+        "127.0.0.1:8765",
+        "-t",
+        "${workspaceFolder}"
+      ],
+      "options": {
+        "env": {
+          "GOOGLE_MAPS_API_KEY": "${input:googleMapsApiKey}"
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "php-server",
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "PHP .* Development Server",
+          "endsPattern": "Development Server \\(http://127\\.0\\.0\\.1:8765\\) started"
+        }
+      }
+    },
+    {
+      "label": "Run local runtime smoke test",
+      "type": "process",
+      "command": "python3",
+      "args": [
+        "${workspaceFolder}/tests/runtime_smoke.py"
+      ],
+      "dependsOn": "Start local PHP webserver",
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "googleMapsApiKey",
+      "type": "promptString",
+      "description": "Google Maps API key restricted to this local site",
+      "password": true
+    }
+  ]
+}

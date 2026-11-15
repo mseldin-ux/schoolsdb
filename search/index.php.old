@@ -1,0 +1,188 @@
+<?php
+$clat=40.8157;
+$clong=-73.1187 ;
+if ($_REQUEST['centerlong'] && $_REQUEST['centerlat']) {
+	$clat=$_REQUEST['centerlat'];
+	$clong=$_REQUEST['centerlong'] ;
+}
+else {
+	try {
+		$url="http://ipinfodb.com/ip_query.php?timezone=false&ip=".$_SERVER['REMOTE_ADDR'];
+		$xmlcontent=file_get_contents($url);
+		$geoxml=new SimpleXMLElement($xmlcontent);
+		#print_r($geoxml);
+		$clat=$geoxml->Latitude;
+		$clong=$geoxml->Longitude;
+	}
+	catch (Exception $e) {
+		echo 'Caught exception: ',  $e->getMessage(), "\n";
+	}
+}
+#echo "RES is ".$res;
+#exit;
+//include('begin.php'); ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd"><head><title>Montessori Schools Map</title>
+
+<script src="http://maps.google.com/maps?file=api&v=2&key=ABQIAAAAUTo80Pfn-BB5jib3iN1S3xS3E5754d2tO0aMLZ6NsdY3rSqqFRScnTPfV8LfkVMjbBfivFXDq4HJSA"
+      type="text/javascript"></script>
+
+
+<script type="text/javascript" src="/search/js2/switchcontent2.js" ></script>
+<script type="text/javascript"> 
+	var centerLatitude = <?=$clat ?>;
+	var centerLongitude = <?=$clong ?> ;
+	var iev=1000;
+	var map;
+</script>
+
+<script type="text/javascript">
+      document.write('<script type="text/javascript" src="js2/markerclusterer.js"><' + '/script>');
+</script>
+<?
+$mappingurl="js2/cgms_mapping_lib3.php";
+if ($_REQUEST['startzoom']) {
+	$mappingurl.="?startzoom=".urlencode($_REQUEST['startzoom']);
+}
+else {
+	$mappingurl.="?startzoom=9";
+}
+$searchterms=array();
+if ($_REQUEST['keywords']) {
+	$terms=explode(" ",$_REQUEST['keywords']);
+	foreach ($terms as $term) {array_push($searchterms,$term);}
+	$mappingurl.="&keywords=".urlencode($_REQUEST['keywords']);
+}
+if ($_REQUEST['city']) {
+	array_push($searchterms,$_REQUEST['city']);
+	$mappingurl.="&city=".urlencode($_REQUEST['city']);
+}
+if ($_REQUEST['country']) {
+	array_push($searchterms,$_REQUEST['country']);
+	$mappingurl.="&country=".urlencode($_REQUEST['country']);
+}
+if ($_REQUEST['zip']) {
+	array_push($searchterms,$_REQUEST['zip']);
+	$mappingurl.="&zip=".urlencode($_REQUEST['zip']);
+}
+?>
+<script type="text/javascript">
+var searchtermtext="";
+<?
+foreach ($searchterms as $term) {
+	$termtext=str_replace("'","&#39;",$term);
+?>
+searchtermtext+='<?=$termtext ?> ';
+<?
+}
+?>
+
+</script>
+<script id="mapscript" src="<?=$mappingurl ?>" type="text/javascript"></script>
+
+<style type="text/css" media="all">
+@import "/search/styles.css";
+</style>
+
+
+</head>
+<body>
+ <!-- END subheader -->
+<div id="front-container" class="clearfix">
+
+<div id="center">
+<table><tr><td width="600">
+<h1>Montessori Schools Map View</h1>
+This database is provided as a service to the global Montessori community by <a href="http://www.montessori.org">The Montessori Foundation</a> and <a href="http://www.guidedstudies.com">The Center for Guided Montessori Studies</a>. 
+
+<dl><dd>
+<font size="2">
+	 <a href="info.php">More information</a> about this list of schools, or about Montessori in general.
+</font>
+</dd></dl>
+</td>
+<td>
+<a href="http://www.guidedstudies.com"><img src="/images/cgms_logo.jpg" width="268" height="97" alt="CGMS Logo"/></a>
+<a href="http://www.montessori.org"><img src="/images/foundation_logo.jpg" width="87" height="97" alt="Montessori Foundation Logo"/></a>
+		
+</td>
+</tr></table>
+<div id="searchform">
+<h2>Explore using the map, or you may search by zip, city, keyword or country:</h2>
+<form action="" method="post">
+	<input type="hidden" name="action" value="search" />
+	<input type="hidden" name="startzoom" value="-1" />
+
+	Postal Code/Zip <input type="text" name="zip" value="<?=$_REQUEST['zip'] ?>" size="6"/> &nbsp;&nbsp; 
+	City <input type="text" name="city" value="<?=$_REQUEST['city'] ?>" size="14"/> &nbsp;&nbsp; 
+	Keywords/State <input type="text" name="keywords" value="<?=$_REQUEST['keywords'] ?>" size="20" /> &nbsp;&nbsp; 
+	Country <select name="country" style="width: 180px;">
+<?=file_get_contents('countrieslist.txt'); ?>
+</select>		
+	<input type="submit" name="sub" value="search" />
+</form>
+</div>
+
+
+
+
+<div id="schoollistcontainer">
+<?
+if (count($searchterms)>0) {
+	?>
+	<input type="button" value="&nbsp; Reset search (show all schools) &nbsp;" onClick='resetMap();' /><br/>
+	<?
+}
+?>
+<table width="385"><tr><td align="left" width="285"><span id="curcount"></span></td><td align="right" width="100"><span id="islooking"></span></td></tr></table>
+<h4><?=$res ?></h4>
+<iframe id="schoollist" src="pleasewait.html" style="overflow-x: hidden; width: 385px; height: 480px;" scrolling="auto" frameborder="0">
+</iframe>
+</div>
+
+<!--
+
+<iframe id="detailframe"  src="blank.html" style="overflow-x: hidden; width: 225px; height: 500px; float: left;" scrolling="auto" frameborder="0"></iframe>
+-->
+
+
+<span id="nomap"></span>
+<div id="map" style="width: 550px; height: 500px; border: 2px solid #ccc; background-color: #eee; float: right;">If you are seeing this message then we are afraid that your web browser is not compatible with this site. We recommend you upgrade to <a href="http://www.mozilla.com/en-US/firefox/ie.html">one</a> of the <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx">modern</a> <a href="http://www.google.com/chrome">browers</a>.</div> 
+
+</div>
+<script>
+	function changeMapSize() {
+		var mapel=document.getElementById('map');
+		var shrinker=document.getElementById('shrinkmapid');
+		var expander=document.getElementById('expandmapid');
+		//alert(map.style.width);
+		if (mapel.style.width == '700px') {
+			mapel.style.width='400px';
+			shrinker.style.visibility='hidden';
+			expander.style.visibility='visible';
+		}
+		else {
+			mapel.style.width='700px';
+			shrinker.style.visibility='visible';
+			expander.style.visibility='hidden';
+		}
+	}
+</script>
+<!--
+
+<span id='expandmapid'>
+<a href="javascript:void(0);" onclick="changeMapSize(); return true;">Expand Map</a>
+</span>
+<span id='shrinkmapid' style='visibility: hidden;'>
+<a href="javascript:void(0);" onclick="changeMapSize(); return true;">Shrink Map</a>
+</span>
+-->
+
+
+
+
+
+<div id="extradiv"></div>
+</body>
+
+</html>

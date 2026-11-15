@@ -1,0 +1,10 @@
+{
+  "name": "schools-admin-tests",
+  "private": true,
+  "scripts": {
+    "test:admin": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0"
+  }
+}
